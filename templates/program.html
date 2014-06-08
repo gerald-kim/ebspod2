@@ -1,0 +1,15 @@
+<html>
+<body>
+<h2>EBSPod 2</h2>
+
+<h3>{{program.title}}</h3>
+
+<a href="itpc://{{server_url}}/programs/{{program.escaped_key()}}?xml">PODCAST</a>
+
+<ul>
+{% for episode in episodes %}
+    <li><a href="{{episode.file_url}}">{{episode.title}}</a>
+{% endfor %}
+</ul>
+</body>
+</html>

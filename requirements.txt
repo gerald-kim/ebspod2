@@ -1,0 +1,6 @@
+flask==0.10.1
+flask-wtf
+jinja2
+mutagen
+werkzeug
+wtforms

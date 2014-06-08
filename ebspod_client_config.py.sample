@@ -1,0 +1,6 @@
+
+AWS_ACCESS_KEY_ID='AKIAI5WGTZQCEQVRLJAA'
+AWS_SECRET_ACCESS_KEY=''
+BUCKET_NAME='ebspod2'
+SERVER_ADDR='http://localhost:8080/episodes/'
+CLIENT_KEY='testclient'

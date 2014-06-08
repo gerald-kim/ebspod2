@@ -1,0 +1,12 @@
+<html>
+<body>
+<h2>EBSPod 2</h2>
+
+프로그램 목록
+<ul>
+{% for program in programs %}
+    <li><a href="/programs/{{program.key().name()}}">{{program.title}}</a>
+{% endfor %}
+</ul>
+</body>
+</html>

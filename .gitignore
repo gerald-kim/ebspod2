@@ -1,0 +1,5 @@
+*.pyc
+.idea
+.virtualenv
+libs
+ebspod_client_config.py

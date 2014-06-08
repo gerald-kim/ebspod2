@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+    <channel>
+        <title>EBSPod2-{{program.title}}</title>
+        <link></link>
+        <language>ko-kr</language>
+        <copyright>© 2012 Zact.org</copyright>
+        <itunes:subtitle></itunes:subtitle>
+        <itunes:author>ebspod</itunes:author>
+        <itunes:summary></itunes:summary>
+        <description></description>
+        <itunes:owner>
+            <itunes:name>ebspod</itunes:name>
+            <itunes:email>ebspod@zact.org</itunes:email>
+        </itunes:owner>
+        <!--
+        <itunes:image href="http://example.com/podcasts/everything/AllAboutEverything.jpg"/>
+        -->
+        <itunes:category text="Education"/>
+        {% for episode in episodes %}
+        <item>
+            <title>{{episode.title}}</title>
+            <itunes:author>ebspod</itunes:author>
+            <itunes:subtitle></itunes:subtitle>
+            <itunes:summary></itunes:summary>
+            <enclosure url="{{episode.file_url}}" type="audio/mp3"/>
+            <guid>{{episode.file_url}}</guid>
+            <pubDate>{{episode.pub_date()}}</pubDate>
+            <!--
+            <itunes:duration>7:04</itunes:duration>
+            <itunes:keywords>salt, pepper, shaker, exciting</itunes:keywords>
+            -->
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
