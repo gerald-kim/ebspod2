@@ -10,10 +10,12 @@ from model import *
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     programs = Program.all()
     return render_template("index.html", programs=programs)
+
 
 @app.route('/programs/<key>')
 def view_program(key):
@@ -22,10 +24,11 @@ def view_program(key):
 
     server_url = request.environ['SERVER_NAME'] + ':' + request.environ['SERVER_PORT']
 
-    if request.args.get('xml')!=None:
-        return render_template('program.xml', program=program, episodes=episodes.fetch(30), server_url = server_url), 200, {"Content-Type":"text/xml"}
+    if request.args.get('xml') != None:
+        return render_template('program.xml', program=program, episodes=episodes.fetch(30),
+                               server_url=server_url), 200, {"Content-Type": "text/xml"}
 
-    return render_template('program.html', program=program, episodes=episodes.fetch(30), server_url = server_url)
+    return render_template('program.html', program=program, episodes=episodes.fetch(30), server_url=server_url)
 
 
 @app.route('/episodes/', methods=['POST'])
@@ -36,13 +39,16 @@ def create_episode():
     else:
         return "ERROR-client key not found"
 
+
 @app.route('/favicon.ico')
 def favicon():
     return "Not found", 404
+
 
 @app.route('/clients/create')
 def create_client():
     ClientKey(key_name=request.args['client_key']).put()
     return "OK"
+
 
 run_wsgi_app(app)
