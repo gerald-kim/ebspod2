@@ -1,4 +1,4 @@
-# !/usr/bin/env python2.7
+#!/usr/bin/env python
 # encoding: utf-8
 """
 recorder.py
@@ -16,8 +16,8 @@ sys.path.insert(0, path.join(path.dirname(path.abspath(__file__)), "libs"))
 import datetime
 from mutagen.easyid3 import EasyID3
 import tempfile
-import S3
 from ebspod_client_config import *
+import tinys3
 
 
 def s3_file_name(title):
@@ -25,20 +25,25 @@ def s3_file_name(title):
 
 
 def s3_url(title):
-    return "http://s3.amazonaws.com/%s/%s" % (BUCKET_NAME, urllib.quote(s3_file_name(title).encode('utf-8')))
+    return "http://s3-ap-northeast-1.amazonaws.com/%s/%s" % (BUCKET_NAME, urllib.quote(s3_file_name(title).encode('utf-8')))
 
 
 def upload_to_s3(title, filename):
-    conn = S3.AWSAuthConnection(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-    conn.calling_format = S3.CallingFormat.PATH
 
     key = s3_file_name(title).encode('utf-8')
 
+    conn = tinys3.Connection(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, tls=True, endpoint='s3-ap-northeast-1.amazonaws.com')
+
     f = open(filename)
-    r = conn.put(BUCKET_NAME, key, S3.S3Object(f.read()), {'x-amz-acl': 'public-read', 'Content-Type': 'audio/mp3'})
-    if r.http_response.status != 200:
-        print "upload fail."
-        exit(1)
+    conn.upload(key,f,'ebspod3', headers={'x-amz-acl': 'public-read', 'Content-Type': 'audio/mp3'})
+
+    #conn = S3.AWSAuthConnection(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+    #conn.calling_format = S3.CallingFormat.PATH
+    #f = open(filename)
+    #r = conn.put(BUCKET_NAME, key, S3.S3Object(f.read()), {'x-amz-acl': 'public-read', 'Content-Type': 'audio/mp3'})
+    ##if r.http_response.status != 200:
+    #    print "upload fail."
+    #    exit(1)
 
 
 def get_title(program_name):
@@ -59,7 +64,7 @@ if __name__ == '__main__':
     #system("ffmpeg -i %s %s" % (flv_file, mp3_file))
     #system("rtmpdump -r rtmp://ebsandroid.nefficient.com/fmradiofamilypc/familypc1m -B %d -o %s" % (int(sys.argv[1])*60, flv_file))
     #system("ffmpeg -i %s %s" % (flv_file, mp3_file))
-    system("rtmpdump -r rtmp://ebsandroid.ebs.co.kr/fmradiofamilypc/familypc1m -B %d -o - | avconv -i - -b 64k %s" % (
+    system("rtmpdump -r rtmp://ebsandroid.ebs.co.kr/fmradiofamilypc/familypc1m -B %d -o - | avconv -i - -b:a 64k %s" % (
         int(sys.argv[1]) * 60, mp3_file))
 
     #    mp3_file = 'test.mp3'
